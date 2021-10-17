@@ -1,5 +1,8 @@
 ---
 - hosts: all
+  vars_files: 
+    - vars/vars.yaml
+  remote_user: "{{ user }}"
   become: yes
   tasks:
   - name: install prerequisites
@@ -13,25 +16,25 @@
   - name: add apt-key
     apt_key:
       url: https://download.docker.com/linux/debian/gpg
-#  - name: add docker repo
-#    apt_repository:
-#      repo: deb https://download.docker.com/linux/debian buster stable
-#  - name: install docker 
-#    apt:
-#      name: 
-#        - docker-ce
-#        - docker-ce-cli
-#        - containerd.io
-#      update_cache: yes
+  - name: add docker repo
+    apt_repository:
+      repo: deb https://download.docker.com/linux/debian buster stable
+  - name: install docker 
+    apt:
+      name: 
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+      update_cache: yes
   - name: add userpermissions
-    shell: "usermod -aG docker laurelio"
+    shell: "usermod -aG docker {{ user }}"
 
   - name: install python package manager
     apt:
       name: python3-pip
   
   - name: install python sdk
-    become_user: laurelio
+    become_user: "{{ user }}"
     pip:
       name:
         - docker
