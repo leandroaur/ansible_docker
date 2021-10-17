@@ -4,7 +4,7 @@
     - name: Deploy influxdb
       community.docker.docker_container:
         name: influxdb
-        image: influxdb
+        image: influxdb:1.8
         ports:
           - "8086:8086"
           - "8083:8083"
@@ -12,6 +12,7 @@
           - "8189:8189/udp"
         volumes:
           - influxdb_data:/var/lib/influxdb
+          - /home/laurelio/Documents/influxdb:/etc/influxdb
         env:
           INFLUXDB_ADMIN_ENABLED: "true"
         restart_policy: on-failure
