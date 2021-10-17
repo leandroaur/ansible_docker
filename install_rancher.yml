@@ -1,0 +1,23 @@
+---
+- hosts: all
+  tasks:
+    - name: Deploy rancher
+      community.docker.docker_container:
+        name: rancher
+        image: rancher/server:latest
+        ports:
+          - "8080:8080"
+        restart_policy: unless-stopped
+
+    - name: Deploy MySQL
+      community.docker.docker_container:
+        name: db
+        image: mysql:5.7
+        volumes:
+          - db:/var/lib/mysql
+        env:
+          MYSQL_DATABASE: "rancherdb"
+          MYSQL_USER: "laurelio"
+          MYSQL_PASSWORD: "lebase951"
+          MYSQL_RANDOM_ROOT_PASSWORD: '1'
+        restart_policy: unless-stopped 

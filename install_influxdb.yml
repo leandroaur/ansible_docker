@@ -1,0 +1,17 @@
+---
+- hosts: all
+  tasks:
+    - name: Deploy influxdb
+      community.docker.docker_container:
+        name: influxdb
+        image: influxdb
+        ports:
+          - "8086:8086"
+          - "8083:8083"
+          - "8089:8089/udp"
+          - "8189:8189/udp"
+        volumes:
+          - influxdb_data:/var/lib/influxdb
+        env:
+          INFLUXDB_ADMIN_ENABLED: "true"
+        restart_policy: on-failure
